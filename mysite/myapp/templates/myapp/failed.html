@@ -1,0 +1,7 @@
+{% extends "myapp/base.html" %}
+{% block body %}
+
+<div class="grid place-items-center h-screen ">
+    <div class="text-green-500 font-bold text-6xl">Payment Failed !</div>
+    <a  class ="bg-red-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded" href="{% url 'index' %}" download>Go Back To HomePage</a>
+</div>

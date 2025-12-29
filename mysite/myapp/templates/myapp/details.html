@@ -1,0 +1,188 @@
+{% extends "myapp/base.html" %}
+{% load static %}
+
+{% block body %}
+
+<div class="max-w-5xl mx-auto p-6">
+    <div class="bg-white shadow-lg rounded-2xl p-6 flex flex-col md:flex-row gap-8">
+
+        {% comment %} Product Image {% endcomment %}
+        <div class="w-full md:w-1/2 flex justify-center">
+            <img 
+                src="https://stores.lifestylestores.com/VendorpageTheme/Enterprise/EThemeForLifestyleUpdated/images/product-not-found.jpg" 
+                alt="Product Image"
+                class="rounded-xl shadow-md w-full max-w-sm object-cover"
+            >
+        </div>
+
+        {% comment %} Product Details  {% endcomment %}
+        <div class="w-full md:w-1/2 space-y-5">
+
+            {% comment %} Product Name  {% endcomment %}
+            <h1 class="font-bold text-3xl text-gray-800">
+                {{ product.name }}
+            </h1>
+
+           {% comment %} Description  {% endcomment %}
+            <p class="text-gray-600 text-lg leading-relaxed">
+                {{ product.description }}
+            </p>
+
+             {% comment %} Price  {% endcomment %}
+            <div class="text-3xl font-extrabold text-green-600">
+               $ {{ product.price }}
+        </div>
+
+
+
+        <input type="hidden" id="csrf-token" value="{{ csrf_token }}">
+
+    <button id="checkout-button"
+        class="mt-4 bg-green-600 hover:bg-green-700 text-white text-lg px-6 py-3 rounded-xl shadow-md transition-all duration-300"
+        type="submit"
+    >
+        Buy Now
+    </button>
+
+    {% comment %} create a hidden div to store user email {% endcomment %}
+    <div id="myemail"  hidden>
+        {{ user.email }}
+
+    </div>
+    </div>
+</div>
+</div>
+
+
+
+<script src="https://js.stripe.com/v3/"></script>
+
+<script>
+    const stripe = Stripe('{{ stripe_publishable_key }}');
+    const checkoutButton = document.getElementById("checkout-button");
+
+    checkoutButton.addEventListener("click", () => {
+        const email = document.getElementById("myemail").innerText.trim();
+        const csrfToken = document.getElementById("csrf-token").value;
+
+        if (!email) {
+            alert("Please login to continue");
+            return;
+        }
+
+        fetch("{% url 'checkout_session' id=product.id %}", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+                "X-CSRFToken": csrfToken
+            },
+            body: JSON.stringify({ email: email })
+        })
+        .then(res => res.json())
+        .then(data => {
+            return stripe.redirectToCheckout({ sessionId: data.sessionId });
+        })
+        .catch(err => console.error("Stripe Error:", err));
+    });
+</script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+{% comment %} create stripe checkout session {% endcomment %}
+{% comment %} <script src="https://js.stripe.com/v3/"></script> {% endcomment %}
+
+{% comment %} <script src="https://js.stripe.com/clover/stripe.js"></script> {% endcomment %}
+ {% comment %} <script type="text/javascript">
+    var stripe=Stripe('{{stripe_publishable_key}}')
+    var checkoutButton=document.getElementById("checkout-button")
+    checkoutButton.addEventListener("click",function(){
+        console.log("Button clicked")
+        var email=document.getElementById("myemail").innerText
+
+        if (email.length==0){
+            alert("Please Enter Your Email Address0")
+            return 
+        }
+
+        fetch("{% url 'checkout_session' id=product.id %}" ,{ 
+            method:"POST",
+            body:JSON.stringify({'email':email})
+            
+        }).then(function(response){
+        return response.json()
+    }).then(function(session){
+        return stripe.redirectToCheckout({sessionId:session.sessionId})
+    }).then(function(result){
+        if(result.error){
+            alert(result.error.message)
+        }
+    }).catch(function(error){
+        console.error("Error:",error)
+    })
+    })
+
+</script>
+ {% endcomment %}
+
+
+
+
+
+
+
+{% endblock body %}
+
+
+
+
+
+

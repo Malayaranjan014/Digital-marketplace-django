@@ -1,0 +1,15 @@
+from django.urls import path
+from . import views
+
+urlpatterns = [
+    path('',views.Product_list,name='index'),
+    path('product/<int:id>',views.Product_details,name="details"),
+    path('success/',views.payment_success,name='success'),
+    path('failed/',views.payment_failed,name='failed'),
+    #when user click buy button this url will be called
+    path('api/checkout-session/<int:id>/',views.create_checkout_session,name='checkout_session'),
+    path('createproduct/',views.create_product,name='createproduct'),
+    path('editproduct/<int:id>/',views.edit_product,name='editproduct'),
+    path('deleteproduct/<int:id>/',views.delete_product,name='deleteproduct'),
+    path('dashboard/',views.dashboard,name='dashboard'),
+]

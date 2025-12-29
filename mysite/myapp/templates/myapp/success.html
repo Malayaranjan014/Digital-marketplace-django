@@ -1,0 +1,22 @@
+{% extends "myapp/base.html" %}
+
+
+{% block body %}
+
+<div class="grid place-items-center h-screen ">
+    <div class="text-green-500 font-bold text-6xl">Payment Successful!</div>
+    <a  class ="bg-red-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded" href="{{ order.product.file.url }}" download>Click Here To Download File</a>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+{% endblock %}
