@@ -1,5 +1,8 @@
 from django.urls import path
 from . import views
+from django.contrib.auth import views as auth_views
+from .forms import CustomLoginForm
+
 
 urlpatterns = [
     path('',views.Product_list,name='index'),
@@ -12,4 +15,6 @@ urlpatterns = [
     path('editproduct/<int:id>/',views.edit_product,name='editproduct'),
     path('deleteproduct/<int:id>/',views.delete_product,name='deleteproduct'),
     path('dashboard/',views.dashboard,name='dashboard'),
+    path('register/',views.register,name='register'),
+    path('login/',auth_views.LoginView.as_view(template_name='myapp/login.html' ,authentication_form=CustomLoginForm),name="login"),
 ]
