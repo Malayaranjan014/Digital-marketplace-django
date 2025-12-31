@@ -93,7 +93,11 @@ def create_product(request):
     if request.method=='POST':
         product_form=ProductForm(request.POST ,request.FILES)
         if product_form.is_valid():
-            product_form.save()
+            #its save objects but not save final data  in the db because we want the seller field for each product form each seller   
+            new_product=product_form.save(commit=False)
+            new_product.seller=request.user
+            #now new product is created along with the seller name or id 
+            new_product.save()
             return redirect('index')
         else:
             print(product_form.errors)  
