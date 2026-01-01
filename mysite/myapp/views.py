@@ -110,6 +110,9 @@ def create_product(request):
 
 def edit_product(request,id):
     product=Product.objects.get(id=id)
+    #check if the seller is login then allow to acces the edit 
+    if product.seller != request.user:
+        return redirect('invalid')
     product_form=ProductForm(request.POST or None, request.FILES or None , instance=product)
     if request.method=='POST':
         product_form=ProductForm(request.POST ,request.FILES,instance=product)
@@ -123,6 +126,8 @@ def edit_product(request,id):
 
 def delete_product(request,id):
     product=Product.objects.get(id=id)
+    if product.seller != request.user:
+        return redirect('invalid')
     if request.method=="POST":
         product.delete()
         return redirect('index')
@@ -134,7 +139,8 @@ def delete_product(request,id):
 # create a deshboard for handle products
 
 def dashboard(request):
-    product=Product.objects.all()
+    #display the product only which i create in dashboard we can not see other user product 
+    product=Product.objects.filter(seller=request.user)
     return render(request,'myapp/dashboard.html',{'products':product})
 
 
@@ -153,3 +159,5 @@ def register(request):
 
 
 
+def invalid(request):
+    return render (request,"myapp/invalid.html")
