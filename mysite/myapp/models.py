@@ -7,6 +7,8 @@ class Product(models.Model):
     description = models.CharField(max_length=200)
     price = models.FloatField()
     file = models.FileField(upload_to='uploads')
+    total_sales_amount=models.IntegerField(default=0)
+    total_order=models.IntegerField(default=0)
 
     def __str__(self):
         return self.name 
@@ -30,6 +32,10 @@ class OrderDetail(models.Model):
 
     created_on = models.DateTimeField(auto_now_add=True)
     updated_on = models.DateTimeField(auto_now=True)
+
+
+    def __str__(self):
+        return f"{self.customer_email} | {self.product}"
 
 
 

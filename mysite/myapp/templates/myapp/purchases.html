@@ -1,0 +1,54 @@
+{% extends "myapp/base.html" %} 
+{% block body %}
+<div class="flex justify-between">
+  <div class="ml-20 mt-10 font-bold text-xl">My Purchases</div>
+  <div class="mr-20 mt-10">
+    <a
+      class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
+      href=" {% url 'createproduct' %}"
+      >Create New Products
+    </a>
+  </div>
+</div>
+
+<div class="max-w-7xl mx-auto p-6 space-y-6 mt-10">
+    <div class="order-header bg-white shadow-lg rounded-2xl p-6 flex items-center space-x-6 font-bold">
+        <div class="w-1/4">
+            Product Name
+        </div>
+            <div class="w-1/4">
+                Amount Paid
+        </div>
+        
+        <div class="w-1/4">
+            Order Date
+        </div>
+
+            <div class="w-1/4">
+                Download Link
+        </div>
+   
+
+    </div>
+  {% for order in orders %}
+  <div class="bg-white shadow-lg rounded-2xl p-6 flex items-center space-x-6">
+        <div class="w-1/4">
+            {{ order.product.name }}
+        </div>
+            <div class="w-1/4 text-green-500">
+                {{ order.amount}}
+        </div>
+            <div class="w-1/4">
+                {{order.created_on}}
+
+        </div>
+            <div class="w-1/4">
+                 <a class="bg-green-500 text-white px-4 py-2 rounded " href="{{order.product.file.url}}" download >Click To Download </a>
+        </div>
+        
+  
+  </div>
+  {% endfor %}
+</div>
+
+{% endblock %}

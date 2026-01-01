@@ -1,0 +1,37 @@
+{% extends "myapp/base.html" %}
+{% block body %}
+
+
+<div class="flex justify-between items-center px-10 py-8">
+    <h1 class="text-2xl font-bold text-gray-800">
+        Sales Statistics
+    </h1>
+
+    <a
+        href="{% url 'dashboard' %}"
+        class="bg-green-600 hover:bg-green-700 text-white px-4 py-2 rounded-lg shadow transition"
+    >
+        Dashboard
+    </a>
+</div>
+
+
+<div class="max-w-5xl mx-auto mt-10">
+    <div class="bg-white shadow-xl rounded-2xl p-10 text-center">
+
+    <p class="text-gray-500 text-sm uppercase tracking-wide">
+            Lifetime Revenue
+        </p>
+
+        <div class="mt-4 text-5xl font-extrabold text-green-600">
+            $ {{ total_sales.amount__sum }}
+        </div>
+
+            <p class="mt-6 text-gray-600">
+            Total earnings from all completed sales
+                </p>
+
+    </div>
+</div>
+
+{% endblock %}

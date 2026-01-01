@@ -5,7 +5,7 @@ import stripe ,json
 from django.views.decorators.csrf import csrf_exempt
 from django.conf import settings
 from .forms import ProductForm , UserRegistrationForm
-
+from django.db.models import Sum
 # Create your views here.
 
 
@@ -78,6 +78,12 @@ def payment_success(request):
     session=stripe.checkout.Session.retrieve(session_id)
     order=get_object_or_404(OrderDetail, stripe_session_id=session.id)
     order.has_paid=True
+    #calculate  the  total sales of products
+    product=Product.objects.get(id=order.product.id)
+    product.total_sales_amount += int(product.price)
+    #count the number of product is order  
+    product.total_order+=1
+    product.save()
     order.save()
 
     return render(request,'myapp/success.html',{'order':order})
@@ -161,3 +167,19 @@ def register(request):
 
 def invalid(request):
     return render (request,"myapp/invalid.html")
+
+
+
+
+def my_purchases(request):
+    # get all the orders current login user purchases 
+    orders=OrderDetail.objects.filter(customer_email=request.user.email)
+    return render (request,'myapp/purchases.html' ,{'orders':orders})
+
+
+#for calculate the total amount of product of the login user 
+def sales_dashboard(request):
+    orders=OrderDetail.objects.filter(product__seller=request.user)
+    total_sales=orders.aggregate(Sum('amount'))
+    print(total_sales)
+    return render (request,'myapp/sales_dashboard.html',{'total_sales':total_sales})
