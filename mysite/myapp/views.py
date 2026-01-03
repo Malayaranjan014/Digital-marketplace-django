@@ -6,6 +6,8 @@ from django.views.decorators.csrf import csrf_exempt
 from django.conf import settings
 from .forms import ProductForm , UserRegistrationForm
 from django.db.models import Sum
+from django.utils import timezone
+from datetime import timedelta 
 # Create your views here.
 
 
@@ -179,7 +181,28 @@ def my_purchases(request):
 
 #for calculate the total amount of product of the login user 
 def sales_dashboard(request):
+    #get all orders 
     orders=OrderDetail.objects.filter(product__seller=request.user)
     total_sales=orders.aggregate(Sum('amount'))
+
     print(total_sales)
-    return render (request,'myapp/sales_dashboard.html',{'total_sales':total_sales})
+    now = timezone.now()
+
+    # calculate 365 days sales  
+    last_year = now - timedelta(days=365)
+    yearly_sales = orders.filter(created_on__gte=last_year).aggregate(Sum('amount'))
+
+    # calculate 30 days sales  
+    last_month = now - timedelta(days=30)
+    monthly_sales = orders.filter(created_on__gte=last_month).aggregate(Sum('amount'))
+    
+    # calculate last 7 days sales  
+    last_week = now - timedelta(days=7)
+    weekly_sales = orders.filter(created_on__gte=last_week).aggregate(Sum('amount'))
+
+    #every day sum past 30 days 
+    daily_sales_sums=OrderDetail.objects.filter(product__seller=request.user).values('created_on').order_by('created_on').annotate(sum=Sum('amount'))
+    print(daily_sales_sums)
+
+
+    return render (request,'myapp/sales_dashboard.html',{'total_sales':total_sales , 'yearly_sales':yearly_sales ,'monthly_sales':monthly_sales ,'weekly_sales':weekly_sales,'daily_sales_sums':daily_sales_sums})

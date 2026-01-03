@@ -32,6 +32,58 @@
                 </p>
 
     </div>
+    <div class="flex">
+        <div class="p-5 w-1/3">
+            <div class="shadow-lg p-10">
+                <div class="text-4xl font-bold mt-4">${{yearly_sales.amount__sum}}</div>
+                <p class="mt-6 text-gray-600">Last 365 Days</p>
+            </div>
+
+        </div>
+        <div class="p-5 w-1/3">
+            <div class="shadow-lg p-10">
+                <div class="text-4xl font-bold mt-4">${{monthly_sales.amount__sum}}</div>
+                <p class="mt-6 text-gray-600">Last 30 Days</p>
+            </div>
+
+        </div>
+        <div class="p-5 w-1/3">
+            <div class="shadow-lg p-10">
+                <div class="text-4xl font-bold mt-4">${{weekly_sales.amount__sum}}</div>
+                <p class="mt-6 text-gray-600">Last 7 Days</p>
+            </div>
+
+        </div>
+
+
+    </div>
+
 </div>
+
+<div class="flex">
+    <div class="w-1/2 shadow-lg m-10 rounded-xl p-6">
+        <div class="ml-10 mt-10 font-bold text-xl mb-6">30Days Sales</div>
+    <div class="grid grid-cols-2 border-b pb-3 text-gray-600 font-semibold">
+      <div class="pl-2">Date</div>
+      <div class="pr-2 text-right">Total Sales</div>
+    </div>
+        {% for daily_sales_sum in daily_sales_sums %}
+        <div class="flex m-10 mt-5 mb-5">
+            <div class="w-1/2">{{ daily_sales_sum.created_on}}</div>
+            <div class="w-1/2 font-bold text-green-500 ">{{ daily_sales_sum.sum }}</div>
+
+        </div>
+
+        {% endfor %}
+
+
+    </div>
+</div>
+
+
+             
+
+
+    
 
 {% endblock %}
