@@ -202,7 +202,12 @@ def sales_dashboard(request):
 
     #every day sum past 30 days 
     daily_sales_sums=OrderDetail.objects.filter(product__seller=request.user).values('created_on').order_by('created_on').annotate(sum=Sum('amount'))
-    print(daily_sales_sums)
+    # print(daily_sales_sums)
+
+    #calculate per product sales 
+    per_product_sales_sums=OrderDetail.objects.filter(product__seller=request.user).values('product__name').order_by('product__name').annotate(sum=Sum('amount'))
+    # print(per_product_sales_sums)
 
 
-    return render (request,'myapp/sales_dashboard.html',{'total_sales':total_sales , 'yearly_sales':yearly_sales ,'monthly_sales':monthly_sales ,'weekly_sales':weekly_sales,'daily_sales_sums':daily_sales_sums})
+
+    return render (request,'myapp/sales_dashboard.html',{'total_sales':total_sales , 'yearly_sales':yearly_sales ,'monthly_sales':monthly_sales ,'weekly_sales':weekly_sales,'daily_sales_sums':daily_sales_sums ,'per_product_sales_sums':per_product_sales_sums})

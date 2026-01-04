@@ -60,17 +60,53 @@
 
 </div>
 
-<div class="flex">
-    <div class="w-1/2 shadow-lg m-10 rounded-xl p-6">
-        <div class="ml-10 mt-10 font-bold text-xl mb-6">30Days Sales</div>
-    <div class="grid grid-cols-2 border-b pb-3 text-gray-600 font-semibold">
-      <div class="pl-2">Date</div>
-      <div class="pr-2 text-right">Total Sales</div>
+<div class="flex ">
+    <div class="w-1/2 shadow-lg m-10 rounded-xl p-6 " id="sales_table">
+        <div class="ml-10 mt-10 font-bold text-xl mb-6 text-center">30Days Sales</div>
+    <div class="flex m-10 mt-5 mb-5">
+      <div class="w-1/2 font-bold">Date</div>
+      <div class="w-1/2 font-bold">Total Sales</div>
     </div>
         {% for daily_sales_sum in daily_sales_sums %}
         <div class="flex m-10 mt-5 mb-5">
-            <div class="w-1/2">{{ daily_sales_sum.created_on}}</div>
-            <div class="w-1/2 font-bold text-green-500 ">{{ daily_sales_sum.sum }}</div>
+            <div class="w-1/2 created-date">{{ daily_sales_sum.created_on}}</div>
+            <div class="w-1/2 day-sum font-bold text-green-500 ">{{ daily_sales_sum.sum }}</div>
+
+        </div>
+
+        {% endfor %}
+
+
+    </div>
+
+    {% comment %} charts for 30 days sales  {% endcomment %}
+    <div class="w-1/2  shadow-lg m-10 p-10">
+        <div class="ml-10 mt-10 font-bold text-lg text-center ">30 Days Sales</div>
+            <canvas id="myChart"></canvas>
+        
+
+    </div>
+</div>
+
+{% comment %} charts for product sales  {% endcomment %}
+<div class="flex">
+    <div class="w-1/2  shadow-lg m-10 p-10">
+        <div class="ml-10 mt-10 font-bold text-lg text-center ">Products Sales Distributaion</div>
+            <canvas id="myChart1"></canvas>
+        
+
+    </div>
+    
+    <div class="w-1/2 shadow-lg m-10 rounded-xl p-6">
+        <div class="ml-10 mt-10 font-bold text-xl mb-6 text-center">Product Sales</div>
+    <div class="flex m-10 mt-5 mb-5">
+      <div class="w-1/2 font-bold">Product Name</div>
+      <div class="w-1/2 font-bold">Total Sales</div>
+    </div>
+        {% for per_product_sales_sum in per_product_sales_sums %}
+        <div class="flex m-10 mt-5 mb-5">
+            <div class="w-1/2 product-name ">{{ per_product_sales_sum.product__name}}</div>
+            <div class="w-1/2 product-sum font-bold text-green-500 ">{{ per_product_sales_sum.sum }}</div>
 
         </div>
 
@@ -80,6 +116,113 @@
     </div>
 </div>
 
+
+
+<script>
+   
+//creating charts daily sales
+const sums =document.getElementsByClassName('day-sum')
+const sum_values=[]
+
+for (let i=0 ; i< sums.length ; i++){
+    let single_sum=sums[i].innerText
+    sum_values.push(parseFloat(single_sum))
+
+}
+
+//console.log(sum_values)
+
+const dates =document.getElementsByClassName('created-date')
+const date_values=[]
+
+for (let i=0 ; i< dates.length ; i++){
+    let single_date=dates[i].innerText
+    date_values.push((single_date))
+
+}
+
+//console.log(date_values)
+
+
+
+//create product sales charts
+
+
+const product_name =document.getElementsByClassName('product-name')
+const product_values=[]
+
+for (let i=0 ; i< product_name.length ; i++){
+    let single_name=product_name[i].innerText
+    product_values.push((single_name))
+
+}
+
+//console.log(product_values)
+
+const product_sum =document.getElementsByClassName('product-sum')
+const product_sum_values=[]
+
+for (let i=0 ; i< product_sum.length ; i++){
+    single_sum=product_sum[i].innerText
+    product_sum_values.push((single_sum))
+
+}
+
+//console.log(product_sum_values)
+     
+  const ctx = document.getElementById('myChart');
+
+  new Chart(ctx, {
+    type: 'line',
+    data: {
+        
+      labels: date_values,  //date values 
+      datasets: [{
+        label: 'Sales For The Past 30 Days ',
+        data: sum_values, //sum values 
+        borderWidth: 1
+      }]
+    },
+    options: {
+      scales: {
+        y: {
+          beginAtZero: true
+        }
+      }
+    }
+  });
+
+
+  //creating chart for product sale charts 
+
+  const ctx1 = document.getElementById('myChart1');
+
+  new Chart(ctx1, {
+    type: 'bar',
+    data: {
+        
+      labels: product_values,  //date values 
+      datasets: [{
+        label: 'Product Sales Sum ',
+        data: product_sum_values, //sum values 
+        borderWidth: 1
+      }]
+    },
+    options: {
+      scales: {
+        y: {
+          beginAtZero: true
+        }
+      }
+    }
+  });
+
+
+
+
+
+
+</script>
 
              
 
