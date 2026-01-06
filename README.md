@@ -1,6 +1,6 @@
 🛒 Django Digital Marketplace
 
-A full-stack Digital Marketplace web application built using Django, Tailwind CSS, and SQLite.  
+A full-stack Digital Marketplace web application built using Django, Tailwind CSS, and SQLite.The Digital MarketPlace is a platfrom where only Digital Products are Sold .
 This project allows users to browse products, manage listings, place orders, and make secure payments using Stripe while providing sellers with earnings and order analytics through a clean dashboard.
 
 🚀 Features
