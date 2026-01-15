@@ -33,7 +33,7 @@ This project allows users to browse products, manage listings, place orders, and
 📊 Dashboard & Analytics
 • Earnings overview for sellers  
 • Orders overview  
-• Charts and statistics  
+• Charts and statistics using charts js library
 • Clean dashboard UI  
 • Fully functional navigation bar  
 
